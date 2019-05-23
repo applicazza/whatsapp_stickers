@@ -1,8 +1,8 @@
 name: whatsapp_stickers
 description: WhatsApp Stickers Plugin
 version: 0.0.1
-author:
-homepage:
+author: Artyom Sokolov
+homepage: https://github.com/applicazza/whatsapp_stickers
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
