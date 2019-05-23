@@ -1,0 +1,65 @@
+PODS:
+  - Flutter (1.0.0)
+  - libwebp (1.0.2):
+    - libwebp/core (= 1.0.2)
+    - libwebp/dec (= 1.0.2)
+    - libwebp/demux (= 1.0.2)
+    - libwebp/dsp (= 1.0.2)
+    - libwebp/enc (= 1.0.2)
+    - libwebp/mux (= 1.0.2)
+    - libwebp/utils (= 1.0.2)
+    - libwebp/webp (= 1.0.2)
+  - libwebp/core (1.0.2):
+    - libwebp/webp
+  - libwebp/dec (1.0.2):
+    - libwebp/core
+  - libwebp/demux (1.0.2):
+    - libwebp/core
+  - libwebp/dsp (1.0.2):
+    - libwebp/core
+  - libwebp/enc (1.0.2):
+    - libwebp/core
+  - libwebp/mux (1.0.2):
+    - libwebp/core
+  - libwebp/utils (1.0.2):
+    - libwebp/core
+  - libwebp/webp (1.0.2)
+  - SwiftProtobuf (1.5.0)
+  - whatsapp_stickers (0.0.1):
+    - Flutter
+    - libwebp
+    - SwiftProtobuf
+    - YYImage
+    - YYImage/WebP
+  - YYImage (1.0.4):
+    - YYImage/Core (= 1.0.4)
+  - YYImage/Core (1.0.4)
+  - YYImage/WebP (1.0.4):
+    - YYImage/Core
+
+DEPENDENCIES:
+  - Flutter (from `.symlinks/flutter/ios`)
+  - whatsapp_stickers (from `.symlinks/plugins/whatsapp_stickers/ios`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - libwebp
+    - SwiftProtobuf
+    - YYImage
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: ".symlinks/flutter/ios"
+  whatsapp_stickers:
+    :path: ".symlinks/plugins/whatsapp_stickers/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
+  libwebp: b068a3bd7c45f7460f6715be7bed1a18fd5d6b48
+  SwiftProtobuf: 241400280f912735c1e1b9fe675fdd2c6c4d42e2
+  whatsapp_stickers: 1014a06601ffc7d075e35d3a0033bb1c170bacef
+  YYImage: 1e1b62a9997399593e4b9c4ecfbbabbf1d3f3b54
+
+PODFILE CHECKSUM: ebd43b443038e611b86ede96e613bd6033c49497
+
+COCOAPODS: 1.6.2
