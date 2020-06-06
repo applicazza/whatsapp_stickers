@@ -1,76 +1,84 @@
-import 'dart:async';
-
 import 'package:flutter/services.dart';
+import 'package:meta/meta.dart';
 
-import 'whatsapp_stickers.pb.dart';
 import 'exceptions.dart';
 
 class WhatsappStickers {
-  static const MethodChannel _channel =
-      const MethodChannel('whatsapp_stickers');
+  static const MethodChannel _channel = const MethodChannel('whatsapp_stickers');
 
   final Map<String, List<String>> _stickers = Map<String, List<String>>();
 
-  final String _identifier;
-  final String _name;
-  final String _publisher;
-  final String _trayImageFileName;
-  final String _publisherWebsite;
-  final String _privacyPolicyWebsite;
-  final String _licenseAgreementWebsite;
+  final String identifier;
+  final String name;
+  final String publisher;
+  final WhatsappStickerImage trayImageFileName;
+  String publisherWebsite;
+  String privacyPolicyWebsite;
+  String licenseAgreementWebsite;
 
-  WhatsappStickers(
-      this._identifier,
-      this._name,
-      this._publisher,
-      this._trayImageFileName,
-      this._publisherWebsite,
-      this._privacyPolicyWebsite,
-      this._licenseAgreementWebsite);
+  WhatsappStickers({
+    @required this.identifier,
+    @required this.name,
+    @required this.publisher,
+    @required this.trayImageFileName,
+    this.publisherWebsite,
+    this.privacyPolicyWebsite,
+    this.licenseAgreementWebsite,
+  });
 
-  void addSticker(String contentsOfFile, List<String> emojis) {
-    _stickers[contentsOfFile] = emojis;
+  void addSticker(WhatsappStickerImage image, List<String> emojis) {
+    _stickers[image.path] = emojis;
   }
 
   Future<void> sendToWhatsApp() async {
-    var message = SendToWhatsAppPayload()
-      ..identifier = _identifier
-      ..name = _name
-      ..publisher = _publisher
-      ..trayImageFileName = _trayImageFileName
-      ..publisherWebsite = _publisherWebsite
-      ..privacyPolicyWebsite = _privacyPolicyWebsite
-      ..licenseAgreementWebsite = _licenseAgreementWebsite;
-
-    _stickers.forEach((sticker, emojis) => message.stickers[sticker] =
-        SendToWhatsAppPayload_Stickers.create()..all.addAll(emojis));
-
     try {
-      await _channel.invokeMethod(
-          "sendToWhatsApp", message.writeToBuffer());
+      final payload = Map<String, dynamic>();
+      payload['identifier'] = identifier;
+      payload['name'] = name;
+      payload['publisher'] = publisher;
+      payload['trayImageFileName'] = trayImageFileName.path;
+      payload['publisherWebsite'] = publisherWebsite;
+      payload['privacyPolicyWebsite'] = privacyPolicyWebsite;
+      payload['licenseAgreementWebsite'] = licenseAgreementWebsite;
+      payload['stickers'] = _stickers;
+      await _channel.invokeMethod('sendToWhatsApp', payload);
     } on PlatformException catch (e) {
       switch (e.code) {
-        case "FILE_NOT_FOUND":
+        case WhatsappStickersFileNotFoundException.CODE:
           throw WhatsappStickersFileNotFoundException(e.message);
-        case "OUTSIDE_ALLOWABLE_RANGE":
+        case WhatsappStickersNumOutsideAllowableRangeException.CODE:
           throw WhatsappStickersNumOutsideAllowableRangeException(e.message);
-        case "UNSUPPORTED_IMAGE_FORMAT":
+        case WhatsappStickersUnsupportedImageFormatException.CODE:
           throw WhatsappStickersUnsupportedImageFormatException(e.message);
-        case "IMAGE_TOO_BIG":
+        case WhatsappStickersImageTooBigException.CODE:
           throw WhatsappStickersImageTooBigException(e.message);
-        case "INCORRECT_IMAGE_SIZE":
+        case WhatsappStickersIncorrectImageSizeException.CODE:
           throw WhatsappStickersIncorrectImageSizeException(e.message);
-        case "ANIMATED_IMAGES_NOT_SUPPORTED":
+        case WhatsappStickersAnimatedImagesNotSupportedException.CODE:
           throw WhatsappStickersAnimatedImagesNotSupportedException(e.message);
-        case "TOO_MANY_EMOJIS":
+        case WhatsappStickersTooManyEmojisException.CODE:
           throw WhatsappStickersTooManyEmojisException(e.message);
-        case "EMPTY_STRING":
+        case WhatsappStickersEmptyStringException.CODE:
           throw WhatsappStickersEmptyStringException(e.message);
-        case "STRING_TOO_LONG":
+        case WhatsappStickersStringTooLongException.CODE:
           throw WhatsappStickersStringTooLongException(e.message);
         default:
           throw WhatsappStickersException(e.message);
       }
     }
+  }
+}
+
+class WhatsappStickerImage {
+  final String path;
+
+  WhatsappStickerImage._internal(this.path);
+
+  factory WhatsappStickerImage.fromAsset(String asset) {
+    return WhatsappStickerImage._internal('assets://$asset');
+  }
+
+  factory WhatsappStickerImage.fromFile(String file) {
+    return WhatsappStickerImage._internal('file://$file');
   }
 }

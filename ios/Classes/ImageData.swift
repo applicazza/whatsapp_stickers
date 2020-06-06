@@ -79,7 +79,7 @@ class ImageData {
      *  Returns a UIImage of the current image data. If data is corrupt, nil will be returned.
      */
     lazy var image: UIImage? = {
-        if type == ImageDataExtension.webp {
+        if type == .webp {
             return WebPManager.shared.decode(webPData: data)
         } else {
             return UIImage(data: data)
@@ -90,9 +90,7 @@ class ImageData {
      * Returns an image with the new size.
      */
     func image(withSize size: CGSize) -> UIImage? {
-        guard let image = self.image else {
-            return nil
-        }
+        guard let image = image else { return nil }
 
         UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
         image.draw(in: CGRect(origin: .zero, size: size))
@@ -108,12 +106,11 @@ class ImageData {
 
     static func imageDataIfCompliant(contentsOfFile filename: String, isTray: Bool) throws -> ImageData {
         let fileExtension: String = (filename as NSString).pathExtension
-
-        guard let imageURL = Bundle.main.url(forResource: filename, withExtension: "") else {
+        
+        guard let data = FileManager.default.contents(atPath: filename) else {
             throw StickerPackError.fileNotFound
         }
 
-        let data = try Data(contentsOf: imageURL)
         guard let imageType = ImageDataExtension(rawValue: fileExtension) else {
             throw StickerPackError.unsupportedImageFormat(fileExtension)
         }

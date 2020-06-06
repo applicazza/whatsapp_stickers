@@ -40,9 +40,7 @@ class StickerPack {
 
     var bytesSize: Int64 {
         var totalBytes: Int64 = Int64(name.utf8.count + publisher.utf8.count + trayImage.data.count)
-        for sticker in stickers {
-            totalBytes += sticker.bytesSize
-        }
+        stickers.forEach { totalBytes += $0.bytesSize }
         return totalBytes
     }
 
@@ -186,7 +184,7 @@ class StickerPack {
             json["identifier"] = self.identifier
             json["name"] = self.name
             json["publisher"] = self.publisher
-            json["tray_image"] = UIImagePNGRepresentation(self.trayImage.image!)?.base64EncodedString()
+            json["tray_image"] = self.trayImage.image!.pngData()?.base64EncodedString()
 
             var stickersArray: [[String: Any]] = []
             for sticker in self.stickers {
