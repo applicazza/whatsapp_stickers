@@ -1,3 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="dev.applicazza.flutter.plugins.whatsapp_stickers">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="dev.applicazza.flutter.plugins.whatsapp_stickers">
+    <application
+        android:name="io.flutter.app.FlutterApplication"
+        tools:ignore="GoogleAppIndexingWarning"
+        android:allowBackup="false"
+        android:fullBackupContent="false">
+
+        <provider
+            android:name=".StickerContentProvider"
+            android:authorities="${applicationId}.stickercontentprovider"
+            android:enabled="true"
+            android:exported="true"
+            android:readPermission="com.whatsapp.sticker.READ"
+            />
+    </application>
+
 </manifest>
