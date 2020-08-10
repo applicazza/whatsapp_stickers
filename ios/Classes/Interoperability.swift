@@ -42,7 +42,7 @@ struct Interoperability {
             pasteboard.setData(dataToSend, forPasteboardType: PasteboardStickerPackDataType)
         }
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if canSend() {
                 if #available(iOS 10.0, *) {
                     UIApplication.shared.open(WhatsAppURL)
