@@ -1,3 +1,7 @@
+## 0.0.4
+
+* Possible workaround for "operation couldn't be completed (com.third-party-stickers error 1000)" on iOS.
+
 ## 0.0.3
 
 * Android compatibility has been added.
