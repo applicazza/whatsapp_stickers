@@ -1,3 +1,7 @@
+## 0.0.3
+
+* Android compatibility has been added.
+
 ## 0.0.2
 
 * iOS part has been rewritten and is not backward compatible
