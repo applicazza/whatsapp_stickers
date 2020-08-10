@@ -4,7 +4,6 @@ A Flutter plugin for adding stickers to WhatsApp.
 
 ## Notes
 
-* Currently iOS is the only supported platform.
 * ```trayImageFileName``` uses PNG data whereas stickers use WebP data.
 
 ## Usage
@@ -13,7 +12,15 @@ To use this plugin, add `whatsapp_stickers` as a [dependency in your pubspec.yam
 
 ### Android
 
-TBD
+Add the following option to your `app\build.gradle` file. This will prevent all WebP files from being compressed.
+
+```
+android {
+    aaptOptions {
+        noCompress "webp"
+    }
+}
+```
 
 ### iOS
 
