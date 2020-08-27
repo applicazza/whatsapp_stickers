@@ -121,11 +121,11 @@ public class SwiftWhatsappStickersPlugin: NSObject, FlutterPlugin {
                 result(FlutterError(code: "GENERAL_ERROR", message: error.localizedDescription, details: nil))
                 return
             }
+        }
             
-            stickerPack!.sendToWhatsApp {
-                completed in
-                result(true)
-            }
+        stickerPack!.sendToWhatsApp {
+            completed in
+            result(true)
         }
     }
     
