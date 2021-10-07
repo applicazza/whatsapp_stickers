@@ -24,7 +24,7 @@ class AppRoot extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 32.0),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     child: Text('Install from assets'),
                     onPressed: installFromAssets,
                   ),
@@ -33,7 +33,7 @@ class AppRoot extends StatelessWidget {
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 32.0),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     child: Text('Install from remote'),
                     onPressed: installFromRemote,
                   ),
