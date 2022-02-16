@@ -1,6 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:meta/meta.dart';
-
 import 'exceptions.dart';
 
 class WhatsappStickers {
