@@ -12,15 +12,15 @@ class WhatsappStickers {
   final String name;
   final String publisher;
   final WhatsappStickerImage trayImageFileName;
-  String publisherWebsite;
-  String privacyPolicyWebsite;
-  String licenseAgreementWebsite;
+  String? publisherWebsite;
+  String? privacyPolicyWebsite;
+  String? licenseAgreementWebsite;
 
   WhatsappStickers({
-    @required this.identifier,
-    @required this.name,
-    @required this.publisher,
-    @required this.trayImageFileName,
+    required this.identifier,
+    required this.name,
+    required this.publisher,
+    required this.trayImageFileName,
     this.publisherWebsite,
     this.privacyPolicyWebsite,
     this.licenseAgreementWebsite,
