@@ -1,6 +1,6 @@
 name: whatsapp_stickers
 description: WhatsApp Stickers plugin for Flutter.
-version: 0.0.4
+version: 0.1.0-nullsafety.0
 homepage: https://github.com/applicazza/whatsapp_stickers
 
 environment:
