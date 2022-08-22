@@ -85,10 +85,10 @@ class WhatsappStickersEmojisNotAvailableException extends WhatsappStickersExcept
   WhatsappStickersEmojisNotAvailableException(this.cause) : super('');
 }
 
-class WhatsappStickersIncorrectPixelIconException extends WhatsappStickersException {
-  static const String CODE = 'INCORRECT_PIXEL_ICON';
+class WhatsappStickersIncorrectSizeIconException extends WhatsappStickersException {
+  static const String CODE = 'INCORRECT_SIZE_ICON';
 
   final String? cause;
 
-  WhatsappStickersIncorrectPixelIconException(this.cause) : super('');
+  WhatsappStickersIncorrectSizeIconException(this.cause) : super('');
 }

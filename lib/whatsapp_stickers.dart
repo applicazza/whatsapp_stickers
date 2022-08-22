@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'exceptions.dart';
-import 'dart:io';
 
 class WhatsappStickers {
   static const MethodChannel _channel = const MethodChannel('whatsapp_stickers');
@@ -40,21 +39,21 @@ class WhatsappStickers {
     }
   }
 
-  Future<void> checkIconPixel() async {
+  Future<void> checkIconSize() async {
     final path = trayImageFileName.path.split('//')[1];
     final byteData = await rootBundle.load(path);
     final decodedImage = await decodeImageFromList(byteData.buffer.asUint8List(
       byteData.offsetInBytes,
       byteData.lengthInBytes,
     ));
-    if (decodedImage.width != 56 || decodedImage.height != 56) {
-      throw WhatsappStickersIncorrectPixelIconException('INCORRECT_PIXEL_ICON');
+    if (decodedImage.width != 96 || decodedImage.height != 96) {
+      throw WhatsappStickersIncorrectSizeIconException('INCORRECT_SIZE_ICON');
     }
   }
 
   Future<void> sendToWhatsApp() async {
     try {
-      await checkIconPixel();
+      await checkIconSize();
       final payload = Map<String, dynamic>();
       payload['identifier'] = identifier;
       payload['name'] = name;
@@ -85,8 +84,8 @@ class WhatsappStickers {
           throw WhatsappStickersEmptyStringException(e.message);
         case WhatsappStickersStringTooLongException.CODE:
           throw WhatsappStickersStringTooLongException(e.message);
-        case WhatsappStickersIncorrectPixelIconException.CODE:
-          throw WhatsappStickersIncorrectPixelIconException(e.message);
+        case WhatsappStickersIncorrectSizeIconException.CODE:
+          throw WhatsappStickersIncorrectSizeIconException(e.message);
         default:
           throw WhatsappStickersException(e.message);
       }
