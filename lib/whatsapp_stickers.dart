@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'exceptions.dart';
+import 'dart:io';
 
 class WhatsappStickers {
   static const MethodChannel _channel = const MethodChannel('whatsapp_stickers');
@@ -25,11 +27,34 @@ class WhatsappStickers {
   });
 
   void addSticker(WhatsappStickerImage image, List<String> emojis) {
+    emojisIsAvailable(emojis);
     _stickers[image.path] = emojis;
+  }
+
+  void emojisIsAvailable(List<String> emojis) {
+    for (final emoji in emojis) {
+      if (!availableEmojis.contains(emoji)) {
+        throw WhatsappStickersEmojisNotAvailableException(
+            'EMOJIS_NOT_AVAILABLE');
+      }
+    }
+  }
+
+  Future<void> checkIconPixel() async {
+    final path = trayImageFileName.path.split('//')[1];
+    final byteData = await rootBundle.load(path);
+    final decodedImage = await decodeImageFromList(byteData.buffer.asUint8List(
+      byteData.offsetInBytes,
+      byteData.lengthInBytes,
+    ));
+    if (decodedImage.width != 56 || decodedImage.height != 56) {
+      throw WhatsappStickersIncorrectPixelIconException('INCORRECT_PIXEL_ICON');
+    }
   }
 
   Future<void> sendToWhatsApp() async {
     try {
+      await checkIconPixel();
       final payload = Map<String, dynamic>();
       payload['identifier'] = identifier;
       payload['name'] = name;
@@ -60,6 +85,8 @@ class WhatsappStickers {
           throw WhatsappStickersEmptyStringException(e.message);
         case WhatsappStickersStringTooLongException.CODE:
           throw WhatsappStickersStringTooLongException(e.message);
+        case WhatsappStickersIncorrectPixelIconException.CODE:
+          throw WhatsappStickersIncorrectPixelIconException(e.message);
         default:
           throw WhatsappStickersException(e.message);
       }
@@ -80,3 +107,6 @@ class WhatsappStickerImage {
     return WhatsappStickerImage._internal('file://$file');
   }
 }
+
+const availableEmojis =
+    '❤, 😍, 😘, 💕, 😻, 💑, 👩‍❤‍👩, 👨‍❤‍👨, 💏, 👩‍❤‍💋‍👩, 👨‍❤‍💋‍👨, 🧡, 💛, 💚, 💙, 💜, 🖤, 💔, ❣, 💞, 💓, 💗, 💖, 💘, 💝, 💟, ♥, 💌, 💋, 👩‍❤️‍💋‍👩, 👨‍❤️‍💋‍👨, 👩‍❤️‍👨, 👩‍❤️‍👩, 👨‍❤️‍👨, 👩‍❤️‍💋‍👨, 👬, 👭, 👫, 🥰, 😚, 😙, 👄, 🌹, 😽, ❣️, ❤️,😀, 😃, 😄, 😁, 😆, 😅, 😂, 🤣, 🙂, 😛, 😝, 😜, 🤪, 🤗, 😺, 😸, 😹, ☺, 😌, 😉, 🤗, 😊,☹, 😣, 😖, 😫, 😩, 😢, 😭, 😞, 😔, 😟, 😕, 😤, 😠, 😥, 😰, 😨, 😿, 😾, 😓, 🙍‍♂, 🙍‍♀, 💔, 🙁, 🥺, 🤕, ☔️, ⛈, 🌩, 🌧,😯, 😦, 😧, 😮, 😲, 🙀, 😱, 🤯, 😳, ❗, ❕, 🤬, 😡, 😠, 🙄, 👿, 😾, 😤, 💢, 👺, 🗯️, 😒, 🥵,👋,🎊, 🎉, 🎁, 🎈, 👯‍♂️, 👯, 👯‍♀️, 💃, 🕺, 🔥, ⭐️, ✨, 💫, 🎇, 🎆, 🍻, 🥂, 🍾, 🎂, 🍰';
