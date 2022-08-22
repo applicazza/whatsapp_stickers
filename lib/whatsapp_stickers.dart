@@ -41,8 +41,8 @@ class WhatsappStickers {
   }
 
   Future<void> checkIconPixel() async {
-    var decodedImage = await decodeImageFromList(
-        File(trayImageFileName.path).readAsBytesSync());
+    final path = trayImageFileName.path.split('//')[1];
+    var decodedImage = await decodeImageFromList(File(path).readAsBytesSync());
     if (decodedImage.width != 56 || decodedImage.height != 56) {
       throw WhatsappStickersIncorrectPixelIconException('INCORRECT_PIXEL_ICON');
     }
