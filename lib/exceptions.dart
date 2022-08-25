@@ -76,15 +76,6 @@ class WhatsappStickersStringTooLongException extends WhatsappStickersException {
   WhatsappStickersStringTooLongException(this.cause) : super('');
 }
 
-
-class WhatsappStickersEmojisNotAvailableException extends WhatsappStickersException {
-  static const String CODE = 'EMOJIS_NOT_AVAILABLE';
-
-  final String? cause;
-
-  WhatsappStickersEmojisNotAvailableException(this.cause) : super('');
-}
-
 class WhatsappStickersIncorrectSizeIconException extends WhatsappStickersException {
   static const String CODE = 'INCORRECT_SIZE_ICON';
 

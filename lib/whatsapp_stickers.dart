@@ -26,18 +26,9 @@ class WhatsappStickers {
   });
 
   void addSticker(WhatsappStickerImage image, List<String> emojis) {
-    emojisIsAvailable(emojis);
     _stickers[image.path] = emojis;
   }
 
-  void emojisIsAvailable(List<String> emojis) {
-    for (final emoji in emojis) {
-      if (!availableEmojis.contains(emoji)) {
-        throw WhatsappStickersEmojisNotAvailableException(
-            'EMOJIS_NOT_AVAILABLE');
-      }
-    }
-  }
 
   Future<void> checkIconSize() async {
     final path = trayImageFileName.path.split('//')[1];
@@ -106,6 +97,3 @@ class WhatsappStickerImage {
     return WhatsappStickerImage._internal('file://$file');
   }
 }
-
-const availableEmojis =
-    '❤, 😍, 😘, 💕, 😻, 💑, 👩‍❤‍👩, 👨‍❤‍👨, 💏, 👩‍❤‍💋‍👩, 👨‍❤‍💋‍👨, 🧡, 💛, 💚, 💙, 💜, 🖤, 💔, ❣, 💞, 💓, 💗, 💖, 💘, 💝, 💟, ♥, 💌, 💋, 👩‍❤️‍💋‍👩, 👨‍❤️‍💋‍👨, 👩‍❤️‍👨, 👩‍❤️‍👩, 👨‍❤️‍👨, 👩‍❤️‍💋‍👨, 👬, 👭, 👫, 🥰, 😚, 😙, 👄, 🌹, 😽, ❣️, ❤️,😀, 😃, 😄, 😁, 😆, 😅, 😂, 🤣, 🙂, 😛, 😝, 😜, 🤪, 🤗, 😺, 😸, 😹, ☺, 😌, 😉, 🤗, 😊,☹, 😣, 😖, 😫, 😩, 😢, 😭, 😞, 😔, 😟, 😕, 😤, 😠, 😥, 😰, 😨, 😿, 😾, 😓, 🙍‍♂, 🙍‍♀, 💔, 🙁, 🥺, 🤕, ☔️, ⛈, 🌩, 🌧,😯, 😦, 😧, 😮, 😲, 🙀, 😱, 🤯, 😳, ❗, ❕, 🤬, 😡, 😠, 🙄, 👿, 😾, 😤, 💢, 👺, 🗯️, 😒, 🥵,👋,🎊, 🎉, 🎁, 🎈, 👯‍♂️, 👯, 👯‍♀️, 💃, 🕺, 🔥, ⭐️, ✨, 💫, 🎇, 🎆, 🍻, 🥂, 🍾, 🎂, 🍰';
