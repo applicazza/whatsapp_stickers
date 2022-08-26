@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'exceptions.dart';
 
@@ -28,8 +29,22 @@ class WhatsappStickers {
     _stickers[image.path] = emojis;
   }
 
+
+  Future<void> checkTrayImageSize() async {
+    final path = trayImageFileName.path.split('//')[1];
+    final byteData = await rootBundle.load(path);
+    final decodedImage = await decodeImageFromList(byteData.buffer.asUint8List(
+      byteData.offsetInBytes,
+      byteData.lengthInBytes,
+    ));
+    if (decodedImage.width != 96 || decodedImage.height != 96) {
+      throw WhatsappStickersIncorrectSizeTrayImageException('INCORRECT_SIZE_TRAY_IMAGE');
+    }
+  }
+
   Future<void> sendToWhatsApp() async {
     try {
+      await checkTrayImageSize();
       final payload = Map<String, dynamic>();
       payload['identifier'] = identifier;
       payload['name'] = name;
@@ -60,6 +75,8 @@ class WhatsappStickers {
           throw WhatsappStickersEmptyStringException(e.message);
         case WhatsappStickersStringTooLongException.CODE:
           throw WhatsappStickersStringTooLongException(e.message);
+        case WhatsappStickersIncorrectSizeTrayImageException.CODE:
+          throw WhatsappStickersIncorrectSizeTrayImageException(e.message);
         default:
           throw WhatsappStickersException(e.message);
       }

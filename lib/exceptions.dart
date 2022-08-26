@@ -75,3 +75,11 @@ class WhatsappStickersStringTooLongException extends WhatsappStickersException {
 
   WhatsappStickersStringTooLongException(this.cause) : super('');
 }
+
+class WhatsappStickersIncorrectSizeTrayImageException extends WhatsappStickersException {
+  static const String CODE = 'INCORRECT_SIZE_TRAY_IMAGE';
+
+  final String? cause;
+
+  WhatsappStickersIncorrectSizeTrayImageException(this.cause) : super('');
+}
