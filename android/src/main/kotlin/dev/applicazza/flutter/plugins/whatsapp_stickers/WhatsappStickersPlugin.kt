@@ -140,7 +140,7 @@ public class WhatsappStickersPlugin: FlutterPlugin, MethodCallHandler, ActivityA
   }
 
   override fun onDetachedFromActivity() {
-    TODO("Not yet implemented")
+//    TODO("Not yet implemented"). Сrashed for audio player with whatsapp stickers when double-clicked back
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
