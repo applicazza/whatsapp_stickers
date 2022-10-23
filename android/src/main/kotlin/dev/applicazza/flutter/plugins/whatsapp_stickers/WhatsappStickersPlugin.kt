@@ -6,7 +6,6 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -17,7 +16,6 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.PluginRegistry.Registrar
-import java.io.File
 
 
 /** WhatsappStickersPlugin */
@@ -73,7 +71,11 @@ public class WhatsappStickersPlugin: FlutterPlugin, MethodCallHandler, ActivityA
     fun getContentProviderAuthority(context: Context): String {
       return context.packageName + ".stickercontentprovider"
     }
-    
+
+    @JvmStatic
+    fun refreshContentProvider(context: Context) {
+      context.contentResolver?.call(getContentProviderAuthorityURI(context), StickerContentProvider.REFRESH, null, null)
+    }
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -99,6 +101,7 @@ public class WhatsappStickersPlugin: FlutterPlugin, MethodCallHandler, ActivityA
           val stickerPack: StickerPack = ConfigFileManager.fromMethodCall(context, call)
           // update json file
           ConfigFileManager.addNewPack(context, stickerPack)
+          context?.let { refreshContentProvider(it) }
           context?.let { StickerPackValidator.verifyStickerPackValidity(it, stickerPack) };
           // send intent to whatsapp
           val ws = WhitelistCheck.isWhatsAppConsumerAppInstalled(context?.packageManager)
@@ -109,7 +112,6 @@ public class WhatsappStickersPlugin: FlutterPlugin, MethodCallHandler, ActivityA
           val stickerPackIdentifier = stickerPack.identifier
           val stickerPackName = stickerPack.name
           val authority: String? = context?.let { getContentProviderAuthority(it) }
-
           val intent = createIntentToAddStickerPack(authority, stickerPackIdentifier, stickerPackName)
 
           try {
@@ -140,11 +142,11 @@ public class WhatsappStickersPlugin: FlutterPlugin, MethodCallHandler, ActivityA
   }
 
   override fun onDetachedFromActivity() {
-    TODO("Not yet implemented")
+    // TODO: Not yet implemented
   }
 
   override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    TODO("Not yet implemented")
+    // TODO: Not yet implemented
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -152,7 +154,7 @@ public class WhatsappStickersPlugin: FlutterPlugin, MethodCallHandler, ActivityA
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
-    TODO("Not yet implemented")
+    // TODO: Not yet implemented
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
