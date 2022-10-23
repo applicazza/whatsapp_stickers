@@ -9,7 +9,6 @@
 package dev.applicazza.flutter.plugins.whatsapp_stickers;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -18,6 +17,7 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 import android.util.Log;
@@ -75,6 +75,8 @@ public class StickerContentProvider extends ContentProvider {
     private static final int STICKERS_ASSET_CODE = 4;
 
     private static final int STICKER_PACK_TRAY_ICON_CODE = 5;
+
+    public static final String REFRESH = "refresh";
 
     private List<StickerPack> stickerPackList;
 
@@ -313,5 +315,15 @@ public class StickerContentProvider extends ContentProvider {
     public int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         throw new UnsupportedOperationException("Not supported");
+    }
+
+    @Nullable
+    @Override
+    public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+        if (method.equals(REFRESH)) {
+            readContentFile(Objects.requireNonNull(getContext()));
+            return null;
+        }
+        return super.call(method, arg, extras);
     }
 }
