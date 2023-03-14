@@ -5,7 +5,9 @@
         android:name="io.flutter.app.FlutterApplication"
         tools:ignore="GoogleAppIndexingWarning"
         android:allowBackup="false"
-        android:fullBackupContent="false">
+        android:fullBackupContent="false"
+        tools:replace="android:name"
+        >
 
         <provider
             android:name=".StickerContentProvider"
